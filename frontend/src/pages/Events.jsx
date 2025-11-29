@@ -1,23 +1,22 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 export default function Events() {
-  const [data, setData] = useState([]);
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URL}/events`)
-      .then(res => setData(res.data));
+    fetch(import.meta.env.VITE_API_URL + "/events")
+      .then(res => res.json())
+      .then(data => setEvents(data));
   }, []);
 
   return (
-    <div>
-      <h1>Upcoming Events</h1>
-      {data.map(e => (
-        <div key={e._id}>
-          <h2>{e.title}</h2>
+    <div className="p-6 max-w-3xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Upcoming Events</h1>
+      {events.map(e => (
+        <div key={e._id} className="bg-white p-4 rounded shadow mb-3">
+          <h2 className="text-xl font-semibold">{e.title}</h2>
           <p>{e.description}</p>
-          <p>{e.date}</p>
-          <a href={`/register/${e._id}`}>Register</a>
+          <p className="text-sm text-gray-500">{e.date}</p>
         </div>
       ))}
     </div>
